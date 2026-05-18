@@ -1,5 +1,7 @@
 package CA_2;
 
+// Department class represents a department in the bank
+// It extends Employee so it can be linked to employees
 public class Department {
 
     // Department has a name and a department code
