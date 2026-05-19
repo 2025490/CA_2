@@ -75,7 +75,64 @@ public class CA_2 {
                     break; 
                     
                 case 3:
-                    System.out.println("ADD RECORDS selected");
+                    System.out.println("\nADD RECORDS selected");
+
+                    // Ask for the employee name
+                    System.out.print("Please input the Employee Name: ");
+                    String newName = scanner.nextLine();
+
+                    // Show manager type options
+                    System.out.println("Please select from the following Management Staff:");
+                    System.out.println("1. Head Manager");
+                    System.out.println("2. Assistant Manager");
+                    System.out.println("3. Team Lead");
+                    System.out.print("Enter your choice: ");
+                    int managerChoice = scanner.nextInt();
+                    scanner.nextLine();
+
+                    // Validate manager choice
+                    String managerType = "";
+                    if (managerChoice == 1) {
+                    managerType = "Head Manager";
+                    } else if (managerChoice == 2) {
+                    managerType = "Assistant Manager";
+                    } else if (managerChoice == 3) {
+                    managerType = "Team Lead";
+                    } else {
+                    System.out.println("Invalid manager type. Record not added.");
+                    break;
+                    }
+
+                    // Show department options
+                    System.out.println("Please select the Department:");
+                    System.out.println("1. Customer Service");
+                    System.out.println("2. Foreign Exchange");
+                    System.out.println("3. HR");
+                    System.out.print("Enter your choice: ");
+                    int departmentChoice = scanner.nextInt();
+                    scanner.nextLine();
+
+                    // Validate department choice
+                    String department = "";
+                    if (departmentChoice == 1) {
+                    department = "Customer Service";
+                    } else if (departmentChoice == 2) {
+                    department = "Foreign Exchange";
+                    } else if (departmentChoice == 3) {
+                    department = "HR";
+                    } else {
+                    System.out.println("Invalid department. Record not added.");
+                    break;
+                    }
+
+                    // Create new employee and add to the list
+                    Employee newEmployee = new Employee(newName, managerType, department);
+                    names.add(newName);
+
+                    // Re-sort the list after adding the new employee
+                    names = MergeSort.sort(names);
+
+                    System.out.println("\n\"" + newName + "\" has been added as \"" + managerType + "\" to \"" + department + "\" successfully!");
                     break;
                     
                 case 4:
