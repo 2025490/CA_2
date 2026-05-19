@@ -53,18 +53,39 @@ public class CA_2 {
                         System.out.println((i + 1) + ". " + names.get(i));
                     }
                     break;
+                    
                 case 2:
-                    System.out.println("SEARCH selected");
-                    break;
+                    System.out.println("\nSEARCH selected");
+                    System.out.print("Please enter the name to search: ");
+                    String searchName = scanner.nextLine();
+
+                    // Search for the name using Binary Search
+                    int index = BinarySearch.search(names, searchName, 0, names.size() - 1);
+
+                    // If the name was found, display the details
+                    if (index != -1) {
+                    System.out.println("\nEmployee found!");
+                    System.out.println("Name: " + names.get(index));
+                    System.out.println("Manager Type: Head Manager");
+                    System.out.println("Department: Foreign Exchange");
+                    } else {
+                    // If the name was not found, display a message
+                    System.out.println("Employee not found. Please try again.");
+                    }
+                    break; 
+                    
                 case 3:
                     System.out.println("ADD RECORDS selected");
                     break;
+                    
                 case 4:
                     System.out.println("CREATE BINARY TREE selected");
                     break;
+                    
                 case 5:
                     System.out.println("Exiting... Goodbye!");
                     break;
+                    
                 default:
                     System.out.println("Invalid option, please try again.");
             }
