@@ -10,29 +10,32 @@ public class CA_2 {
 
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
-        ArrayList<String> names = new ArrayList<>();
+        ArrayList<Employee> employees = new ArrayList<>();
 
         System.out.println("Welcome to the Bank Employee Management System");
         System.out.print("Please enter the filename to read: ");
         String filename = scanner.nextLine();
 
         // Read the file using FileHandler class
-        names = FileHandler.readFile(filename);
+        employees = FileHandler.readFile(filename);
 
         // Check if file was read successfully
-        if (names.isEmpty()) {
+        if (employees.isEmpty()) {
             System.out.println("Error: File not found or empty. Please try again.");
             return;
         }
 
         System.out.println("File read successfully");
 
-        // Sort the names using Merge Sort
+        // Sort the employees by name using Merge Sort
+        ArrayList<String> names = new ArrayList<>();
+        for (Employee e : employees) {
+            names.add(e.getName());
+        }
         names = MergeSort.sort(names);
 
         // Loop keeps the menu running until the user selects EXIT
         do {
-            // Print each menu option using the enum
             System.out.println("\nDo You wish to SORT or SEARCH:");
             for (MenuOption option : MenuOption.values()) {
                 System.out.println(option);
@@ -42,46 +45,43 @@ public class CA_2 {
             choice = scanner.nextInt();
             scanner.nextLine();
 
-            // Handle the user choice
             switch (choice) {
                 case 1:
                     System.out.println("\nSORT selected");
                     System.out.println("First 20 names in alphabetical order:");
                     System.out.println("--------------------------------------");
-                    // Display only the first 20 names
                     for (int i = 0; i < 20 && i < names.size(); i++) {
                         System.out.println((i + 1) + ". " + names.get(i));
                     }
                     break;
-                    
+
                 case 2:
                     System.out.println("\nSEARCH selected");
                     System.out.print("Please enter the name to search: ");
                     String searchName = scanner.nextLine();
 
-                    // Search for the name using Binary Search
                     int index = BinarySearch.search(names, searchName, 0, names.size() - 1);
 
-                    // If the name was found, display the details
                     if (index != -1) {
-                    System.out.println("\nEmployee found!");
-                    System.out.println("Name: " + names.get(index));
-                    System.out.println("Manager Type: Head Manager");
-                    System.out.println("Department: Foreign Exchange");
+                        // Find the full employee details
+                        for (Employee e : employees) {
+                            if (e.getName().equalsIgnoreCase(searchName)) {
+                                System.out.println("\nEmployee found!");
+                                System.out.println(e.toString());
+                                break;
+                            }
+                        }
                     } else {
-                    // If the name was not found, display a message
-                    System.out.println("Employee not found. Please try again.");
+                        System.out.println("Employee not found. Please try again.");
                     }
-                    break; 
-                    
+                    break;
+
                 case 3:
                     System.out.println("\nADD RECORDS selected");
 
-                    // Ask for the employee name
                     System.out.print("Please input the Employee Name: ");
                     String newName = scanner.nextLine();
 
-                    // Show manager type options
                     System.out.println("Please select from the following Management Staff:");
                     System.out.println("1. Head Manager");
                     System.out.println("2. Assistant Manager");
@@ -90,20 +90,18 @@ public class CA_2 {
                     int managerChoice = scanner.nextInt();
                     scanner.nextLine();
 
-                    // Validate manager choice
                     String managerType = "";
                     if (managerChoice == 1) {
-                    managerType = "Head Manager";
+                        managerType = "Head Manager";
                     } else if (managerChoice == 2) {
-                    managerType = "Assistant Manager";
+                        managerType = "Assistant Manager";
                     } else if (managerChoice == 3) {
-                    managerType = "Team Lead";
+                        managerType = "Team Lead";
                     } else {
-                    System.out.println("Invalid manager type. Record not added.");
-                    break;
+                        System.out.println("Invalid manager type. Record not added.");
+                        break;
                     }
 
-                    // Show department options
                     System.out.println("Please select the Department:");
                     System.out.println("1. IT Development");
                     System.out.println("2. HR");
@@ -117,7 +115,6 @@ public class CA_2 {
                     int departmentChoice = scanner.nextInt();
                     scanner.nextLine();
 
-                    // Validate department choice
                     String department = "";
                     if (departmentChoice == 1) {
                         department = "IT Development";
@@ -136,28 +133,45 @@ public class CA_2 {
                     } else if (departmentChoice == 8) {
                         department = "Sales";
                     } else {
-                    System.out.println("Invalid department. Record not added.");
-                    break;
+                        System.out.println("Invalid department. Record not added.");
+                        break;
                     }
-                     
-                    // Create new employee and add to the list
-                    Employee newEmployee = new Employee(newName, managerType, department);
-                    names.add(newName);
 
-                    // Re-sort the list after adding the new employee
+                    // Create new employee and add to lists
+                    Employee newEmployee = new Employee(newName, managerType, department);
+                    employees.add(newEmployee);
+                    names.add(newName);
                     names = MergeSort.sort(names);
 
                     System.out.println("\n\"" + newName + "\" has been added as \"" + managerType + "\" to \"" + department + "\" successfully!");
+
+                    // Display all newly added records
+                    System.out.println("\nNewly added records:");
+                    System.out.println(newEmployee.toString());
                     break;
-                    
+
                 case 4:
-                    System.out.println("CREATE BINARY TREE selected");
+                    System.out.println("\nCreate Binary Tree selected");
+
+                    BinaryTree tree = new BinaryTree();
+
+                    // Insert all employees from the file into the tree
+                    for (Employee e : employees) {
+                        tree.insert(e.getName(), e.getManagerType(), e.getDepartment());
+                    }
+
+                    // Display the tree
+                    tree.levelOrderTraversal();
+
+                    // Display tree height and total nodes
+                    System.out.println("\nTree Height: " + tree.getHeight(tree.root));
+                    System.out.println("Total Nodes: " + tree.countNodes(tree.root));
                     break;
-                    
+
                 case 5:
                     System.out.println("Exiting... Goodbye!");
                     break;
-                    
+
                 default:
                     System.out.println("Invalid option, please try again.");
             }
