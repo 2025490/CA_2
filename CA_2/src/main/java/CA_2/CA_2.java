@@ -105,9 +105,14 @@ public class CA_2 {
 
                     // Show department options
                     System.out.println("Please select the Department:");
-                    System.out.println("1. Customer Service");
-                    System.out.println("2. Foreign Exchange");
-                    System.out.println("3. HR");
+                    System.out.println("1. IT Development");
+                    System.out.println("2. HR");
+                    System.out.println("3. Finance");
+                    System.out.println("4. Marketing");
+                    System.out.println("5. Customer Service");
+                    System.out.println("6. Operations");
+                    System.out.println("7. Accounting");
+                    System.out.println("8. Sales");
                     System.out.print("Enter your choice: ");
                     int departmentChoice = scanner.nextInt();
                     scanner.nextLine();
@@ -115,16 +120,26 @@ public class CA_2 {
                     // Validate department choice
                     String department = "";
                     if (departmentChoice == 1) {
-                    department = "Customer Service";
+                        department = "IT Development";
                     } else if (departmentChoice == 2) {
-                    department = "Foreign Exchange";
+                        department = "HR";
                     } else if (departmentChoice == 3) {
-                    department = "HR";
+                        department = "Finance";
+                    } else if (departmentChoice == 4) {
+                        department = "Marketing";
+                    } else if (departmentChoice == 5) {
+                        department = "Customer Service";
+                    } else if (departmentChoice == 6) {
+                        department = "Operations";
+                    } else if (departmentChoice == 7) {
+                        department = "Accounting";
+                    } else if (departmentChoice == 8) {
+                        department = "Sales";
                     } else {
                     System.out.println("Invalid department. Record not added.");
                     break;
                     }
-
+                     
                     // Create new employee and add to the list
                     Employee newEmployee = new Employee(newName, managerType, department);
                     names.add(newName);

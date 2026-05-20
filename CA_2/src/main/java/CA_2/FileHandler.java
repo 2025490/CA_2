@@ -8,31 +8,43 @@ import java.util.ArrayList;
 // This class handles reading the Applicants_Form.txt file
 public class FileHandler {
 
-    // Reads the file and returns a list of names
-    public static ArrayList<String> readFile(String filename) {
+    // Reads the CSV file and returns a list of employees
+    public static ArrayList<Employee> readFile(String filename) {
 
-        // ArrayList to store the names from the file
-        ArrayList<String> names = new ArrayList<>();
+        ArrayList<Employee> employees = new ArrayList<>();
 
         try {
-            // Opens the file for reading
             BufferedReader reader = new BufferedReader(new FileReader(filename));
             String line;
 
-            // Reads each line until the end of the file
+            // Skip the first line (header)
+            reader.readLine();
+
+            // Read each line
             while ((line = reader.readLine()) != null) {
-                // Only adds the line if it is not empty
                 if (!line.trim().isEmpty()) {
-                    names.add(line.trim());
+                    // Split the line by comma
+                    String[] parts = line.split(",");
+
+                    // Get first name and last name
+                    String name = parts[0].trim() + " " + parts[1].trim();
+
+                    // Get department
+                    String department = parts[5].trim();
+
+                    // Get job title as manager type
+                    String managerType = parts[7].trim();
+
+                    // Create a new employee and add to list
+                    employees.add(new Employee(name, managerType, department));
                 }
             }
             reader.close();
 
         } catch (IOException e) {
-            // If the file is not found, print an error message
             System.out.println("Error reading file: " + e.getMessage());
         }
 
-        return names;
+        return employees;
     }
 }
