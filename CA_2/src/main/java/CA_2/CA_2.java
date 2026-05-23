@@ -9,7 +9,6 @@ public class CA_2 {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        int choice = 0;
         ArrayList<Employee> employees = new ArrayList<>();
 
         System.out.println("Welcome to the Bank Employee Management System");
@@ -34,6 +33,9 @@ public class CA_2 {
         }
         names = MergeSort.sort(names);
 
+        String choiceInput;
+        int choice = 0;
+
         // Loop keeps the menu running until the user selects EXIT
         do {
             System.out.println("\nDo You wish to SORT or SEARCH:");
@@ -42,8 +44,16 @@ public class CA_2 {
             }
 
             System.out.print("Enter your choice: ");
-            choice = scanner.nextInt();
-            scanner.nextLine();
+            choiceInput = scanner.nextLine().trim();
+
+            // Validate that the input is a number
+            try {
+                choice = Integer.parseInt(choiceInput);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                choice = 0;
+                continue;
+            }
 
             switch (choice) {
                 case 1:
@@ -58,12 +68,11 @@ public class CA_2 {
                 case 2:
                     System.out.println("\nSEARCH selected");
                     System.out.print("Please enter the name to search: ");
-                    String searchName = scanner.nextLine();
+                    String searchName = scanner.nextLine().trim();
 
                     int index = BinarySearch.search(names, searchName, 0, names.size() - 1);
 
                     if (index != -1) {
-                        // Find the full employee details
                         for (Employee e : employees) {
                             if (e.getName().equalsIgnoreCase(searchName)) {
                                 System.out.println("\nEmployee found!");
@@ -79,29 +88,41 @@ public class CA_2 {
                 case 3:
                     System.out.println("\nADD RECORDS selected");
 
-                    System.out.print("Please input the Employee Name: ");
-                    String newName = scanner.nextLine();
+                    // Get and validate employee name
+                    String newName = "";
+                    while (newName.isEmpty()) {
+                        System.out.print("Please input the Employee Name: ");
+                        newName = scanner.nextLine().trim();
+                        if (newName.isEmpty()) {
+                            System.out.println("Name cannot be empty. Please try again.");
+                        }
+                    }
 
+                    // Get and validate manager type
                     System.out.println("Please select from the following Management Staff:");
                     System.out.println("1. Head Manager");
                     System.out.println("2. Assistant Manager");
                     System.out.println("3. Team Lead");
-                    System.out.print("Enter your choice: ");
-                    int managerChoice = scanner.nextInt();
-                    scanner.nextLine();
 
-                    String managerType = "";
-                    if (managerChoice == 1) {
-                        managerType = "Head Manager";
-                    } else if (managerChoice == 2) {
-                        managerType = "Assistant Manager";
-                    } else if (managerChoice == 3) {
-                        managerType = "Team Lead";
-                    } else {
-                        System.out.println("Invalid manager type. Record not added.");
-                        break;
+                    int managerChoice = 0;
+                    while (managerChoice < 1 || managerChoice > 3) {
+                        System.out.print("Enter your choice: ");
+                        try {
+                            managerChoice = Integer.parseInt(scanner.nextLine().trim());
+                            if (managerChoice < 1 || managerChoice > 3) {
+                                System.out.println("Invalid choice. Please enter 1, 2 or 3.");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid input. Please enter a number.");
+                        }
                     }
 
+                    String managerType = "";
+                    if (managerChoice == 1) managerType = "Head Manager";
+                    else if (managerChoice == 2) managerType = "Assistant Manager";
+                    else managerType = "Team Lead";
+
+                    // Get and validate department
                     System.out.println("Please select the Department:");
                     System.out.println("1. IT Development");
                     System.out.println("2. HR");
@@ -111,31 +132,29 @@ public class CA_2 {
                     System.out.println("6. Operations");
                     System.out.println("7. Accounting");
                     System.out.println("8. Sales");
-                    System.out.print("Enter your choice: ");
-                    int departmentChoice = scanner.nextInt();
-                    scanner.nextLine();
+
+                    int departmentChoice = 0;
+                    while (departmentChoice < 1 || departmentChoice > 8) {
+                        System.out.print("Enter your choice: ");
+                        try {
+                            departmentChoice = Integer.parseInt(scanner.nextLine().trim());
+                            if (departmentChoice < 1 || departmentChoice > 8) {
+                                System.out.println("Invalid choice. Please enter a number between 1 and 8.");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid input. Please enter a number.");
+                        }
+                    }
 
                     String department = "";
-                    if (departmentChoice == 1) {
-                        department = "IT Development";
-                    } else if (departmentChoice == 2) {
-                        department = "HR";
-                    } else if (departmentChoice == 3) {
-                        department = "Finance";
-                    } else if (departmentChoice == 4) {
-                        department = "Marketing";
-                    } else if (departmentChoice == 5) {
-                        department = "Customer Service";
-                    } else if (departmentChoice == 6) {
-                        department = "Operations";
-                    } else if (departmentChoice == 7) {
-                        department = "Accounting";
-                    } else if (departmentChoice == 8) {
-                        department = "Sales";
-                    } else {
-                        System.out.println("Invalid department. Record not added.");
-                        break;
-                    }
+                    if (departmentChoice == 1) department = "IT Development";
+                    else if (departmentChoice == 2) department = "HR";
+                    else if (departmentChoice == 3) department = "Finance";
+                    else if (departmentChoice == 4) department = "Marketing";
+                    else if (departmentChoice == 5) department = "Customer Service";
+                    else if (departmentChoice == 6) department = "Operations";
+                    else if (departmentChoice == 7) department = "Accounting";
+                    else department = "Sales";
 
                     // Create new employee and add to lists
                     Employee newEmployee = new Employee(newName, managerType, department);
@@ -144,9 +163,7 @@ public class CA_2 {
                     names = MergeSort.sort(names);
 
                     System.out.println("\n\"" + newName + "\" has been added as \"" + managerType + "\" to \"" + department + "\" successfully!");
-
-                    // Display all newly added records
-                    System.out.println("\nNewly added records:");
+                    System.out.println("\nNewly added record:");
                     System.out.println(newEmployee.toString());
                     break;
 
@@ -155,15 +172,12 @@ public class CA_2 {
 
                     BinaryTree tree = new BinaryTree();
 
-                    // Insert all employees from the file into the tree
                     for (Employee e : employees) {
                         tree.insert(e.getName(), e.getManagerType(), e.getDepartment());
                     }
 
-                    // Display the tree
                     tree.levelOrderTraversal();
 
-                    // Display tree height and total nodes
                     System.out.println("\nTree Height: " + tree.getHeight(tree.root));
                     System.out.println("Total Nodes: " + tree.countNodes(tree.root));
                     break;
